@@ -1,35 +1,96 @@
+using Common.Extension;
+using Common.Model;
 using DataAccess.ProjectContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "NegativeProverb API",
+        Description = "An ASP.NET Core Web API for NegativeProverb",
+        //TermsOfService = new Uri("https://example.com/terms"),
+        //Contact = new OpenApiContact
+        //{
+        //    Name = "Example Contact",
+        //    Url = new Uri("https://example.com/contact")
+        //},
+        //License = new OpenApiLicense
+        //{
+        //    Name = "Example License",
+        //    Url = new Uri("https://example.com/license")
+        //}
+    });
+
+});
 //Scoped猔ンRequestい把σ常琌ン(ControllerViewい猔IDbConnection把σ)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddBusiness();
+
 
 var app = builder.Build();
+
+// 砞﹚办API莱ΑMiddleware
+app.Use(async (context, next) =>
+{
+    try
+    {
+        if (context.Request.ContentLength == 0)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 400;
+
+
+            var errorMessage = new BaseModel
+            {
+                Success = false,
+                Code = context.Response.StatusCode.ToString("D3"),
+                Exception = "A non-empty request body is required.",
+            };
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage));
+        }
+        else
+        {
+            await next();
+        }
+    }
+    catch (Exception ex)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = 500;
+
+        var errorMessage = new BaseModel
+        {
+            Success = false,
+            Code = "500",
+            Exception = ex.Message,
+        };
+
+        await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage));
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
 
 app.UseHttpsRedirection();
 
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

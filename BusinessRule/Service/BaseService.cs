@@ -1,4 +1,6 @@
-﻿using DataAccess.ProjectContext;
+﻿using Common.Attributes;
+using DataAccess.ProjectContext;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace BusinessRule.Service
 {
-
+    [Service()]
     public class BaseService
     {
-        private readonly ProjectContext _db;
+        public readonly ProjectContext _db;
         public BaseService(ProjectContext projectContext)
         {
             _db = projectContext;

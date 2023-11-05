@@ -25,7 +25,18 @@ namespace NegativeProverb.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
+        [Route("CreateUserAccount")]
         public async Task<BaseModel> CreateUserAccount(CreateUserAccountInput input) => await _userinfoService.CreateUserAccount(input);
+
+
+        /// <summary>
+        /// 取得使用者帳號列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("GetUserAccount")]
+        public async Task<BaseModel<GetUserAccountView>> GetUserAccount(GetUserAccountInput input) => await _userinfoService.GetUserAccount(input);
 
     }
 }

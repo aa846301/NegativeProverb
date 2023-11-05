@@ -36,6 +36,10 @@ namespace Common.Model
     public class BaseModel<T>
     {
         /// <summary>
+        /// 輸出資料
+        /// </summary>
+        public T? Data { get; set; }
+        /// <summary>
         /// 是否成功
         /// </summary>
         public bool Success { get; set; }
@@ -50,12 +54,9 @@ namespace Common.Model
         /// </summary>
         public string? Exception { get; set; }
 
-        /// <summary>
-        /// 輸出資料
-        /// </summary>
-        public T? Data { get; set; }
 
 
 
     }
+
 }

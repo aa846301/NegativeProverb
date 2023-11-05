@@ -53,7 +53,7 @@ app.Use(async (context, next) =>
             var errorMessage = new BaseModel
             {
                 Success = false,
-                Code = context.Response.StatusCode.ToString("D3"),
+                Code = context.Response.StatusCode.ToString(),
                 Exception = "A non-empty request body is required.",
             };
             await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage));
@@ -71,7 +71,7 @@ app.Use(async (context, next) =>
         var errorMessage = new BaseModel
         {
             Success = false,
-            Code = "500",
+            Code = context.Response.StatusCode.ToString(),
             Exception = ex.Message,
         };
 

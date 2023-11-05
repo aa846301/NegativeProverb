@@ -1,6 +1,7 @@
 ﻿using BusinessRule.BusinessModel.Userinfo;
 using Common.Model;
 using DataAccess.ProjectContext;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace BusinessRule.Service
             if (input == null)
             {
                 result.Success = false;
-                result.Code = HttpStatusCode.BadRequest.ToString("D3");
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
                 result.Exception = "不正確的輸入";
                 return result;
             }
@@ -53,18 +54,75 @@ namespace BusinessRule.Service
             if (flag > 0)
             {
                 result.Success = true;
-                result.Code = HttpStatusCode.OK.ToString("D3");
+                result.Code = ((int)HttpStatusCode.OK).ToString();
                 result.Exception = "新增成功";
             }
             else
             {
                 result.Success = false;
-                result.Code = HttpStatusCode.BadRequest.ToString("D3");
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
                 result.Exception = "新增失敗";
             }
 
 
             return result;
         }
+
+
+        /// <summary>
+        /// 取得使用者帳號列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<BaseModel<GetUserAccountView>> GetUserAccount(GetUserAccountInput input)
+        {
+            var result = new BaseModel<GetUserAccountView>()
+            {
+                Success = true,
+                Data = new GetUserAccountView()
+                {
+                    UserAccountList = new List<GetUserAccoutOutput>()
+                }
+            };
+            if (input == null)
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "不正確的輸入";
+                return result;
+            }
+
+            var accountQuery = _db.User_UserAccount.AsQueryable().AsNoTracking();
+            if (!string.IsNullOrEmpty(input.Account))
+            {
+                accountQuery = accountQuery.Where(x => x.U_Account.Contains(input.Account));
+            }
+            if (!string.IsNullOrEmpty(input.EMail))
+            {
+                accountQuery = accountQuery.Where(x => x.U_EMail.Contains(input.EMail));
+            }
+            if (!string.IsNullOrEmpty(input.Tel))
+            {
+                accountQuery = accountQuery.Where(x => x.U_Tel.Contains(input.Tel));
+            }
+            if (input.UesrUUID != null)
+            {
+                accountQuery = accountQuery.Where(x => x.U_UUID == input.UesrUUID);
+            }
+            var accountList = await accountQuery.ToListAsync();
+
+            result.Data.UserAccountList = accountList.Select(x => new GetUserAccoutOutput
+            {
+                U_UUID = x.U_UUID,
+                U_Account = x.U_Account,
+                U_EMail = x.U_EMail,
+                U_Name = x.U_Name,
+                U_Tel = x.U_Tel
+            }).ToList();
+
+            return result;
+        }
+
+
     }
 }

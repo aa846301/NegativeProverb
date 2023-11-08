@@ -110,7 +110,7 @@ namespace BusinessRule.Service
             }
             var accountList = await accountQuery.ToListAsync();
 
-            result.Data.UserAccountList = accountList.Select(x => new GetUserAccoutOutput
+            result.Data.UserAccountList = accountList.OrderBy(x => x.U_Sort).Select(x => new GetUserAccoutOutput
             {
                 U_UUID = x.U_UUID,
                 U_Account = x.U_Account,

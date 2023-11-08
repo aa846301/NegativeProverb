@@ -61,8 +61,8 @@ builder.Services.AddSwaggerGen(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddBusiness();
+
 builder.Services.AddSingleton<JwtHelpers>();
-builder.Services.AddSingleton<ClaimsPrincipal>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -105,24 +105,25 @@ app.Use(async (context, next) =>
 {
     try
     {
-        if (context.Request.ContentLength == 0)
-        {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = 400;
+        //if (context.Request.ContentLength == 0)
+        //{
+        //    context.Response.ContentType = "application/json";
+        //    context.Response.StatusCode = 400;
 
 
-            var errorMessage = new BaseModel
-            {
-                Success = false,
-                Code = context.Response.StatusCode.ToString(),
-                Exception = "A non-empty request body is required.",
-            };
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage));
-        }
-        else
-        {
-            await next();
-        }
+        //    var errorMessage = new BaseModel
+        //    {
+        //        Success = false,
+        //        Code = context.Response.StatusCode.ToString(),
+        //        Exception = "A non-empty request body is required.",
+        //    };
+        //    await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage));
+        //}
+        //else
+        //{
+        //    await next();
+        //}
+        await next();
     }
     catch (Exception ex)
     {

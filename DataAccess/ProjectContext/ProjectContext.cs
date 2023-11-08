@@ -13,10 +13,60 @@ public partial class ProjectContext : DbContext
     {
     }
 
+    public virtual DbSet<Post_Post> Post_Post { get; set; }
+
+    public virtual DbSet<Post_PostTag> Post_PostTag { get; set; }
+
+    public virtual DbSet<Post_Tag> Post_Tag { get; set; }
+
     public virtual DbSet<User_UserAccount> User_UserAccount { get; set; }
+
+    public virtual DbSet<User_UserPost> User_UserPost { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Post_Post>(entity =>
+        {
+            entity.HasKey(e => e.P_UUID).HasName("PK_Post");
+
+            entity.Property(e => e.P_UUID)
+                .ValueGeneratedNever()
+                .HasComment("識別編碼");
+            entity.Property(e => e.CreateTime).HasComment("創建時間");
+            entity.Property(e => e.Creator).HasComment("創建人");
+            entity.Property(e => e.P_Post).HasComment("負能量語錄");
+            entity.Property(e => e.U_Sort)
+                .ValueGeneratedOnAdd()
+                .HasComment("排序");
+            entity.Property(e => e.UpdateTime).HasComment("更新時間");
+            entity.Property(e => e.Updator).HasComment("更新人");
+        });
+
+        modelBuilder.Entity<Post_PostTag>(entity =>
+        {
+            entity.Property(e => e.CreateTime).HasComment("創建時間");
+            entity.Property(e => e.Creator).HasComment("創建人");
+            entity.Property(e => e.PPT_UUID).HasComment("語錄標籤關聯UUID");
+            entity.Property(e => e.PT_UUID).HasComment("語錄標籤UUID");
+            entity.Property(e => e.P_UUID).HasComment("語錄UUID");
+            entity.Property(e => e.UpdateTime).HasComment("更新時間");
+            entity.Property(e => e.Updator).HasComment("更新人");
+        });
+
+        modelBuilder.Entity<Post_Tag>(entity =>
+        {
+            entity.HasKey(e => e.PT_UUID).HasName("PK_PostTag");
+
+            entity.Property(e => e.PT_UUID).ValueGeneratedNever();
+            entity.Property(e => e.CreateTime).HasComment("創建時間");
+            entity.Property(e => e.Creator).HasComment("創建人");
+            entity.Property(e => e.PT_Sort)
+                .ValueGeneratedOnAdd()
+                .HasComment("排序");
+            entity.Property(e => e.UpdateTime).HasComment("更新時間");
+            entity.Property(e => e.Updator).HasComment("更新人");
+        });
+
         modelBuilder.Entity<User_UserAccount>(entity =>
         {
             entity.Property(e => e.U_UUID)
@@ -32,6 +82,24 @@ public partial class ProjectContext : DbContext
                 .ValueGeneratedOnAdd()
                 .HasComment("排序");
             entity.Property(e => e.U_Tel).HasComment("電話");
+            entity.Property(e => e.UpdateTime).HasComment("更新時間");
+            entity.Property(e => e.Updator).HasComment("更新人");
+        });
+
+        modelBuilder.Entity<User_UserPost>(entity =>
+        {
+            entity.HasKey(e => e.UP_UUID).HasName("PK_User_Post");
+
+            entity.Property(e => e.UP_UUID)
+                .IsFixedLength()
+                .HasComment("使用者語錄關聯表UUID");
+            entity.Property(e => e.CreateTime).HasComment("創建時間");
+            entity.Property(e => e.Creator).HasComment("創建人");
+            entity.Property(e => e.P_UUID).HasComment("負能量語錄UUID");
+            entity.Property(e => e.U_Sort)
+                .ValueGeneratedOnAdd()
+                .HasComment("排序");
+            entity.Property(e => e.U_UUID).HasComment("使用者UUID");
             entity.Property(e => e.UpdateTime).HasComment("更新時間");
             entity.Property(e => e.Updator).HasComment("更新人");
         });

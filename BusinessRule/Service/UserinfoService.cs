@@ -55,7 +55,6 @@ namespace BusinessRule.Service
             {
                 result.Success = true;
                 result.Code = ((int)HttpStatusCode.OK).ToString();
-                result.Exception = "新增成功";
             }
             else
             {
@@ -122,6 +121,100 @@ namespace BusinessRule.Service
 
             return result;
         }
+
+        /// <summary>
+        /// 修改使用者帳號資訊
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<BaseModel> UpdateUserAccount(UpdateUserAccountInput input)
+        {
+            var result = new BaseModel();
+            if (input == null)
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "不正確的輸入";
+                return result;
+            }
+
+            var userAccount = await _db.User_UserAccount.FirstOrDefaultAsync(x => x.U_UUID == input.U_UUID);
+            if (userAccount == null)
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "找不到使用者帳號";
+                return result;
+            }
+
+            userAccount.U_Pwd = !string.IsNullOrEmpty(input.U_Pwd) ? input.U_Pwd : userAccount.U_Pwd;
+            userAccount.U_Name = !string.IsNullOrEmpty(input.U_Name) ? input.U_Name : userAccount.U_Name;
+            userAccount.U_EMail = !string.IsNullOrEmpty(input.U_EMail) ? input.U_EMail : userAccount.U_EMail;
+            userAccount.U_Tel = !string.IsNullOrEmpty(input.U_Tel) ? input.U_Tel : userAccount.U_Tel;
+            userAccount.Updator = input.UserID;
+            userAccount.UpdateTime = DateTime.Now;
+
+            var flag = await _db.SaveChangesAsync();
+            if (flag > 0)
+            {
+                result.Success = true;
+                result.Code = ((int)HttpStatusCode.OK).ToString();
+            }
+            else
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "更新失敗";
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 刪除使用者帳號
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<BaseModel> DeleteUserAccount(DeleteUserAccountInput input)
+        {
+            var result = new BaseModel()
+            {
+                Success = true,
+                Code = ((int)HttpStatusCode.OK).ToString(),
+            };
+            if (input == null)
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "不正確的輸入";
+                return result;
+            }
+            var userAccount = await _db.User_UserAccount.FirstOrDefaultAsync(x => x.U_UUID == input.U_UUID);
+            if (userAccount == null)
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "找不到使用者帳號";
+                return result;
+            }
+
+            _db.User_UserAccount.Remove(userAccount);
+
+            var flag = await _db.SaveChangesAsync();
+            if (flag > 0)
+            {
+                result.Success = true;
+                result.Code = ((int)HttpStatusCode.OK).ToString();
+            }
+            else
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "刪除失敗";
+            }
+
+            return result;
+        }
+
 
 
     }

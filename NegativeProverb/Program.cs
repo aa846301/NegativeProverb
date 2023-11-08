@@ -4,6 +4,9 @@ using DataAccess.ProjectContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
+using System.Xml.XPath;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +32,8 @@ builder.Services.AddSwaggerGen(options =>
         //    Url = new Uri("https://example.com/license")
         //}
     });
-
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 //Scoped：注入的物件在同一Request中，參考的都是相同物件(你在Controller、View中注入的IDbConnection指向相同參考)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

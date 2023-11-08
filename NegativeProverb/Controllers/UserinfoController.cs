@@ -38,5 +38,25 @@ namespace NegativeProverb.Controllers
         [Route("GetUserAccount")]
         public async Task<BaseModel<GetUserAccountView>> GetUserAccount(GetUserAccountInput input) => await _userinfoService.GetUserAccount(input);
 
+        /// <summary>
+        /// 修改使用者帳號資訊
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("UpdateUserAccount")]
+        public async Task<BaseModel> UpdateUserAccount(UpdateUserAccountInput input) => await _userinfoService.UpdateUserAccount(input);
+
+
+        /// <summary>
+        /// 刪除使用者帳號
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("DeleteUserAccount")]
+        public async Task<BaseModel> DeleteUserAccount(DeleteUserAccountInput input) => await _userinfoService.DeleteUserAccount(input);
+
+
     }
 }

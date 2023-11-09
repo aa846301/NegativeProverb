@@ -29,6 +29,8 @@ public partial class ProjectContext : DbContext
         {
             entity.HasKey(e => e.P_UUID).HasName("PK_Post");
 
+            entity.ToTable(tb => tb.HasComment("負能量語錄主表"));
+
             entity.Property(e => e.P_UUID)
                 .ValueGeneratedNever()
                 .HasComment("識別編碼");
@@ -44,13 +46,26 @@ public partial class ProjectContext : DbContext
 
         modelBuilder.Entity<Post_PostTag>(entity =>
         {
+            entity.Property(e => e.PPT_UUID)
+                .ValueGeneratedNever()
+                .HasComment("語錄標籤關聯UUID");
             entity.Property(e => e.CreateTime).HasComment("創建時間");
             entity.Property(e => e.Creator).HasComment("創建人");
-            entity.Property(e => e.PPT_UUID).HasComment("語錄標籤關聯UUID");
+            entity.Property(e => e.PPT_Sort)
+                .ValueGeneratedOnAdd()
+                .HasComment("排序");
             entity.Property(e => e.PT_UUID).HasComment("語錄標籤UUID");
             entity.Property(e => e.P_UUID).HasComment("語錄UUID");
             entity.Property(e => e.UpdateTime).HasComment("更新時間");
             entity.Property(e => e.Updator).HasComment("更新人");
+
+            entity.HasOne(d => d.PT_UU).WithMany(p => p.Post_PostTag)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Post_PostTag_Post_Tag");
+
+            entity.HasOne(d => d.P_UU).WithMany(p => p.Post_PostTag)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Post_PostTag_Post_Post");
         });
 
         modelBuilder.Entity<Post_Tag>(entity =>

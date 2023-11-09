@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Post;
+namespace BusinessRule.BusinessModel.NewFolder;
 
 public class CreatePostInput
 {
@@ -16,7 +16,7 @@ public class CreatePostInput
     /// <summary>
     /// 語錄標籤列表
     /// </summary>
-    public List<Guid> PostTagList { get; set; } 
+    public List<Guid> PostTagList { get; set; }
 
     /// <summary>
     /// 操作者

@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.ProjectContext;
 
+/// <summary>
+/// 負能量語錄主表
+/// </summary>
 public partial class Post_Post
 {
     /// <summary>
@@ -50,4 +53,7 @@ public partial class Post_Post
     /// </summary>
     [Column(TypeName = "datetime")]
     public DateTime? UpdateTime { get; set; }
+
+    [InverseProperty("P_UU")]
+    public virtual ICollection<Post_PostTag> Post_PostTag { get; set; } = new List<Post_PostTag>();
 }

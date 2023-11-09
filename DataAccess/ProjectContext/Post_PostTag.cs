@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.ProjectContext;
 
-[Keyless]
 public partial class Post_PostTag
 {
     /// <summary>
     /// 語錄標籤關聯UUID
     /// </summary>
+    [Key]
     public Guid PPT_UUID { get; set; }
 
     /// <summary>
@@ -25,6 +25,11 @@ public partial class Post_PostTag
     /// 語錄標籤UUID
     /// </summary>
     public Guid PT_UUID { get; set; }
+
+    /// <summary>
+    /// 排序
+    /// </summary>
+    public int PPT_Sort { get; set; }
 
     /// <summary>
     /// 創建人
@@ -49,4 +54,12 @@ public partial class Post_PostTag
     /// </summary>
     [Column(TypeName = "datetime")]
     public DateTime? UpdateTime { get; set; }
+
+    [ForeignKey("PT_UUID")]
+    [InverseProperty("Post_PostTag")]
+    public virtual Post_Tag PT_UU { get; set; }
+
+    [ForeignKey("P_UUID")]
+    [InverseProperty("Post_PostTag")]
+    public virtual Post_Post P_UU { get; set; }
 }

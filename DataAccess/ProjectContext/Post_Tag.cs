@@ -45,4 +45,7 @@ public partial class Post_Tag
     /// </summary>
     [Column(TypeName = "datetime")]
     public DateTime? UpdateTime { get; set; }
+
+    [InverseProperty("PT_UU")]
+    public virtual ICollection<Post_PostTag> Post_PostTag { get; set; } = new List<Post_PostTag>();
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Login
+namespace DataAccess.BusinessModel.Login
 {
     public class LoginViewModel
     {

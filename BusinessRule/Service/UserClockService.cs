@@ -1,5 +1,5 @@
-﻿using BusinessRule.BusinessModel.UserClock;
-using Common.Model;
+﻿using Common.Model;
+using DataAccess.BusinessModel.UserClock;
 using DataAccess.ProjectContext;
 using Microsoft.EntityFrameworkCore;
 using System.Net;

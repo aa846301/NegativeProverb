@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Post
+namespace DataAccess.BusinessModel.PostTag
 {
     public class GetPostTagView
     {

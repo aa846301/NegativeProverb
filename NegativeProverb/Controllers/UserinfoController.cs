@@ -1,6 +1,6 @@
-﻿using BusinessRule.BusinessModel.Userinfo;
-using BusinessRule.Service;
+﻿using BusinessRule.Service;
 using Common.Model;
+using DataAccess.BusinessModel.Userinfo;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 

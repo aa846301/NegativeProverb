@@ -1,7 +1,6 @@
-﻿using BusinessRule.BusinessModel.NewFolder;
-using BusinessRule.BusinessModel.Post;
-using BusinessRule.Service;
+﻿using BusinessRule.Service;
 using Common.Model;
+using DataAccess.BusinessModel.Post;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NegativeProverb.Controllers;
@@ -35,4 +34,24 @@ public class PostController : BaseController
     [HttpPost]
     [Route("GetPost")]
     public async Task<BaseModel<GetPostView>> GetPost(GetPostInput input) => await _postService.GetPost(input);
+
+
+    /// <summary>
+    /// 更新負能量語錄
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("UpdatePost")]
+    public async Task<BaseModel> UpdatePost(UpdatePostInput input) => await _postService.UpdatePost(input);
+
+
+    /// <summary>
+    /// 刪除負能量語錄
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("DeletePost")]
+    public async Task<BaseModel> DeletePost(DeletePostInput input) => await _postService.DeletePost(input);
 }

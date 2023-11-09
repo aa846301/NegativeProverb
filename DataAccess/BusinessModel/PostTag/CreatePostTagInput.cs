@@ -4,15 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Post
+namespace DataAccess.BusinessModel.PostTag
 {
-    public class UpdatePostTag
+    public class CreatePostTagInput
     {
-        /// <summary>
-        /// 語錄標籤UUID
-        /// </summary>
-        public Guid PT_UUID { get; set; }
-
         /// <summary>
         /// 語錄標籤
         /// </summary>

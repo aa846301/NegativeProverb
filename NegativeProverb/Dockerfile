@@ -7,10 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["NegativeProverb.csproj", "."]
-RUN dotnet restore "./NegativeProverb.csproj"
+COPY ["NegativeProverb/NegativeProverb.csproj", "NegativeProverb/"]
+COPY ["BusinessRule/BusinessRule.csproj", "BusinessRule/"]
+COPY ["Common/Common.csproj", "Common/"]
+COPY ["DataAccess/DataAccess.csproj", "DataAccess/"]
+RUN dotnet restore "NegativeProverb/NegativeProverb.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/NegativeProverb"
 RUN dotnet build "NegativeProverb.csproj" -c Release -o /app/build
 
 FROM build AS publish

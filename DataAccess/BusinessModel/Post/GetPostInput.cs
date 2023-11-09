@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Post
+namespace DataAccess.BusinessModel.Post
 {
     /// <summary>
     /// 查詢語錄 列表 輸入
     /// </summary>
     public class GetPostInput
     {
+
+        /// <summary>
+        /// 負能量語錄UUID
+        /// </summary>
+        public Guid? PostUUID { get; set; }
 
         /// <summary>
         /// 貼文查詢 模糊查詢

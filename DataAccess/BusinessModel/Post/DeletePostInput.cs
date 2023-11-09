@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Post
+namespace DataAccess.BusinessModel.Post
 {
-    public class CreatePostTagInput
+    public class DeletePostInput
     {
         /// <summary>
-        /// 語錄標籤
+        /// 負能量語錄UUID
         /// </summary>
-        public string PostTag { get; set; }
+        public Guid PostUUID { get; set; }
 
         /// <summary>
         /// 操作者

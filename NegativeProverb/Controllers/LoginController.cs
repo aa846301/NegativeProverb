@@ -1,6 +1,6 @@
-﻿using BusinessRule.BusinessModel.Login;
-using BusinessRule.Service;
+﻿using BusinessRule.Service;
 using Common.Model;
+using DataAccess.BusinessModel.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Post
+namespace DataAccess.BusinessModel.PostTag
 {
-    /// <summary>
-    /// 刪除語錄標籤 輸入
-    /// </summary>
-    public class DeletePostTagInput
+    public class GetPostTagOutput
     {
         /// <summary>
         /// 語錄標籤UUID
@@ -17,9 +14,10 @@ namespace BusinessRule.BusinessModel.Post
         public Guid PT_UUID { get; set; }
 
         /// <summary>
-        /// 操作者
+        /// 語錄標籤
         /// </summary>
-        public string UserID { get; set; }
+        public string PostTag { get; set; }
+
 
     }
 }

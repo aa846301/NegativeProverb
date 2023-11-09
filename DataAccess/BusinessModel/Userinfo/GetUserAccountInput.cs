@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Userinfo
+namespace DataAccess.BusinessModel.Userinfo
 {
     public class GetUserAccountInput
     {

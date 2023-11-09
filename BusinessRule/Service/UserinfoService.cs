@@ -1,5 +1,5 @@
-﻿using BusinessRule.BusinessModel.Userinfo;
-using Common.Model;
+﻿using Common.Model;
+using DataAccess.BusinessModel.Userinfo;
 using DataAccess.ProjectContext;
 using Microsoft.EntityFrameworkCore;
 using System;

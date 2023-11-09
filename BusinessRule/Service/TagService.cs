@@ -1,5 +1,5 @@
-﻿using BusinessRule.BusinessModel.Post;
-using Common.Model;
+﻿using Common.Model;
+using DataAccess.BusinessModel.PostTag;
 using DataAccess.ProjectContext;
 using Microsoft.EntityFrameworkCore;
 using System;

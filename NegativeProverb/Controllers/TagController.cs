@@ -1,6 +1,6 @@
-﻿using BusinessRule.BusinessModel.Post;
-using BusinessRule.Service;
+﻿using BusinessRule.Service;
 using Common.Model;
+using DataAccess.BusinessModel.PostTag;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NegativeProverb.Controllers

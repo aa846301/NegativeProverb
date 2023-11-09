@@ -4,15 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.UserClock
+namespace DataAccess.BusinessModel.PostTag
 {
-    public class UserClockInInput
+    public class UpdatePostTag
     {
         /// <summary>
-        /// 使用者UUID
+        /// 語錄標籤UUID
         /// </summary>
-        public Guid U_UUID { get; set; }
+        public Guid PT_UUID { get; set; }
 
+        /// <summary>
+        /// 語錄標籤
+        /// </summary>
+        public string PostTag { get; set; }
 
         /// <summary>
         /// 操作者

@@ -7,6 +7,8 @@
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>.</DockerfileContext>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+		<DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>
 	</PropertyGroup>
 
 	<ItemGroup>

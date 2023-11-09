@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.Userinfo
+namespace DataAccess.BusinessModel.Userinfo
 {
-    public class UpdateUserAccountInput
+    public class CreateUserAccountInput
     {
-        /// <summary>
-        /// 使用者UUID
-        /// </summary>
-        public Guid U_UUID { get; set; }
 
         /// <summary>
-        /// 使用者密
+        /// 帳號
+        /// </summary>
+        public string U_Account { get; set; }
+
+        /// <summary>
+        /// 密碼
         /// </summary>
         public string U_Pwd { get; set; }
 
@@ -33,9 +35,7 @@ namespace BusinessRule.BusinessModel.Userinfo
         /// </summary>
         public string U_Tel { get; set; }
 
-        /// <summary>
-        /// 操作者
-        /// </summary>
+
         public string UserID { get; set; }
     }
 }

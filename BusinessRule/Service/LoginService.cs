@@ -1,6 +1,6 @@
-﻿using BusinessRule.BusinessModel.Login;
-using Common.Attributes;
+﻿using Common.Attributes;
 using Common.Model;
+using DataAccess.BusinessModel.Login;
 using DataAccess.ProjectContext;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;

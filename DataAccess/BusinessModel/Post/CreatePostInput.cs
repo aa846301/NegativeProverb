@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessRule.BusinessModel.NewFolder;
+namespace DataAccess.BusinessModel.Post;
 
 public class CreatePostInput
 {

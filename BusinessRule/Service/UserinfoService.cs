@@ -1,13 +1,13 @@
 ﻿using Common.Model;
+using Common.Utilities;
 using DataAccess.BusinessModel.Userinfo;
 using DataAccess.ProjectContext;
+using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.Configuration;
+using MimeKit;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BusinessRule.Service
 {
@@ -16,10 +16,13 @@ namespace BusinessRule.Service
     /// </summary>
     public class UserinfoService : BaseService
     {
+        private readonly IConfiguration Configuration;
+        private readonly MailHelper MailHelper;
 
-        public UserinfoService(ProjectContext projectContext) : base(projectContext)
+        public UserinfoService(ProjectContext projectContext, IConfiguration configuration, MailHelper mailHelper) : base(projectContext)
         {
-
+            Configuration = configuration;
+            MailHelper = mailHelper;
         }
 
         /// <summary>
@@ -29,7 +32,11 @@ namespace BusinessRule.Service
         /// <returns></returns>
         public async Task<BaseModel> CreateUserAccount(CreateUserAccountInput input)
         {
-            var result = new BaseModel();
+            var result = new BaseModel()
+            {
+                Success = true,
+                Code = ((int)HttpStatusCode.OK).ToString(),
+            };
             if (input == null)
             {
                 result.Success = false;
@@ -38,11 +45,38 @@ namespace BusinessRule.Service
                 return result;
             }
 
+            //檢查帳號或信箱是否已存在
+            var userAccount = await _db.User_UserAccount.Where(x => x.U_Account == input.U_Account || x.U_EMail == input.U_EMail).FirstOrDefaultAsync();
+            if (userAccount != null)
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "已有相同的帳號或信箱";
+                return result;
+            }
+
+            //密碼
+            if (!EncryptionHelper.ValidIsPwd(input.U_Pwd))
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "密碼必須包含大小寫英文字母、數字、特殊符號，且長度必須大於8";
+                return result;
+            }
+            //檢查信箱格式
+            if (!EncryptionHelper.ValidIsEMail(input.U_EMail))
+            {
+                result.Success = false;
+                result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                result.Exception = "信箱格式不正確";
+                return result;
+            }
+
             var newUserAccount = new User_UserAccount
             {
                 U_UUID = Guid.NewGuid(),
                 U_Account = input.U_Account,
-                U_Pwd = input.U_Pwd,
+                U_Pwd = EncryptionHelper.ComputeHmacSha256(input.U_Pwd, Configuration.GetValue<string>("PwdSetting:SaltKey")),
                 U_Name = input.U_Name,
                 U_EMail = input.U_EMail,
                 U_Tel = input.U_Tel,
@@ -50,19 +84,18 @@ namespace BusinessRule.Service
                 CreateTime = DateTime.Now
             };
             _db.User_UserAccount.Add(newUserAccount);
+
             var flag = await _db.SaveChangesAsync();
-            if (flag > 0)
+            if (flag <= 0)
             {
-                result.Success = true;
-                result.Code = ((int)HttpStatusCode.OK).ToString();
-            }
-            else
-            {
+
                 result.Success = false;
                 result.Code = ((int)HttpStatusCode.BadRequest).ToString();
                 result.Exception = "新增失敗";
+                return result;
             }
-
+            //寄出驗證信
+            await MailHelper.SendMail(input.U_EMail,"測試信件","這是一封信件");
 
             return result;
         }
@@ -129,7 +162,11 @@ namespace BusinessRule.Service
         /// <returns></returns>
         public async Task<BaseModel> UpdateUserAccount(UpdateUserAccountInput input)
         {
-            var result = new BaseModel();
+            var result = new BaseModel()
+            {
+                Success = true,
+                Code = ((int)HttpStatusCode.OK).ToString(),
+            };
             if (input == null)
             {
                 result.Success = false;
@@ -147,24 +184,47 @@ namespace BusinessRule.Service
                 return result;
             }
 
-            userAccount.U_Pwd = !string.IsNullOrEmpty(input.U_Pwd) ? input.U_Pwd : userAccount.U_Pwd;
+            if (!string.IsNullOrEmpty(input.U_EMail))
+            {
+                var oldUserAccount = await _db.User_UserAccount.Where(x => x.U_EMail == input.U_EMail).FirstOrDefaultAsync();
+                if (oldUserAccount != null && oldUserAccount.U_UUID != input.U_UUID)
+                {
+                    result.Success = false;
+                    result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                    result.Exception = "已有相同的信箱";
+                    return result;
+                }
+                //檢查信箱格式
+                if (!EncryptionHelper.ValidIsEMail(input.U_EMail))
+                {
+                    result.Code = ((int)HttpStatusCode.BadRequest).ToString();
+                    result.Exception = "信箱格式不正確";
+                    return result;
+                }
+                else
+                {
+                    userAccount.U_EMail = input.U_EMail;
+                }
+
+            }
+
+            if (!string.IsNullOrEmpty(input.U_Pwd) && EncryptionHelper.ValidIsPwd(input.U_Pwd))
+            {
+                userAccount.U_Pwd = EncryptionHelper.ComputeHmacSha256(input.U_Pwd, Configuration.GetValue<string>("PwdSetting:SaltKey"));
+            }
+
             userAccount.U_Name = !string.IsNullOrEmpty(input.U_Name) ? input.U_Name : userAccount.U_Name;
-            userAccount.U_EMail = !string.IsNullOrEmpty(input.U_EMail) ? input.U_EMail : userAccount.U_EMail;
             userAccount.U_Tel = !string.IsNullOrEmpty(input.U_Tel) ? input.U_Tel : userAccount.U_Tel;
             userAccount.Updator = input.UserID;
             userAccount.UpdateTime = DateTime.Now;
 
             var flag = await _db.SaveChangesAsync();
-            if (flag > 0)
-            {
-                result.Success = true;
-                result.Code = ((int)HttpStatusCode.OK).ToString();
-            }
-            else
+            if (flag <= 0)
             {
                 result.Success = false;
                 result.Code = ((int)HttpStatusCode.BadRequest).ToString();
                 result.Exception = "更新失敗";
+                return result;
             }
             return result;
         }
@@ -196,21 +256,23 @@ namespace BusinessRule.Service
                 result.Exception = "找不到使用者帳號";
                 return result;
             }
+            var userPostList = await _db.User_UserPost.Where(x => x.U_UUID == input.U_UUID).ToListAsync();
+            if (userPostList != null && userPostList.Any())
+            {
+                _db.User_UserPost.RemoveRange(userPostList);
+            }
 
             _db.User_UserAccount.Remove(userAccount);
 
             var flag = await _db.SaveChangesAsync();
-            if (flag > 0)
+            if (flag <= 0)
             {
-                result.Success = true;
-                result.Code = ((int)HttpStatusCode.OK).ToString();
-            }
-            else
-            {
+
                 result.Success = false;
                 result.Code = ((int)HttpStatusCode.BadRequest).ToString();
                 result.Exception = "刪除失敗";
             }
+
 
             return result;
         }

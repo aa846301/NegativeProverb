@@ -144,7 +144,7 @@ public class PostService : BaseService
         post.Updator = input.UserID;
         post.UpdateTime = DateTime.Now;
 
-        if(input.PostTagList != null && !input.PostTagList.Any())
+        if (input.PostTagList != null && !input.PostTagList.Any())
         {
             var postTagList = await _db.Post_PostTag.AsQueryable().AsNoTracking().Where(x => x.P_UUID == input.PostUUID).ToListAsync();
             _db.Post_PostTag.RemoveRange(postTagList);
@@ -193,9 +193,10 @@ public class PostService : BaseService
             result.Exception = "查無此語錄";
             return result;
         }
-
+        //刪除主表
         _db.Post_Post.Remove(post);
 
+        //刪除關聯表
         var postTagList = await _db.Post_PostTag.AsQueryable().AsNoTracking().Where(x => x.P_UUID == input.PostUUID).ToListAsync();
         _db.Post_PostTag.RemoveRange(postTagList);
 

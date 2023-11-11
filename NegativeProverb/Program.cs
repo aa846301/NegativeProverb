@@ -1,5 +1,6 @@
 using Common.Extension;
 using Common.Model;
+using Common.Utilities;
 using DataAccess.ProjectContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,7 @@ builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(co
 builder.Services.AddBusiness();
 
 builder.Services.AddSingleton<JwtHelpers>();
+builder.Services.AddSingleton<MailHelper>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

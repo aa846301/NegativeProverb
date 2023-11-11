@@ -56,4 +56,7 @@ public partial class Post_Post
 
     [InverseProperty("P_UU")]
     public virtual ICollection<Post_PostTag> Post_PostTag { get; set; } = new List<Post_PostTag>();
+
+    [InverseProperty("P_UU")]
+    public virtual ICollection<User_UserPost> User_UserPost { get; set; } = new List<User_UserPost>();
 }

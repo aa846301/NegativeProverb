@@ -21,6 +21,11 @@ public class LoginService
 
     }
 
+    /// <summary>
+    /// 登入
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public async Task<BaseModel<string>> Login(LoginViewModel input)
     {
         var result = new BaseModel<string>();

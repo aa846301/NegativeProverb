@@ -14,8 +14,7 @@ public partial class User_UserPost
     /// 使用者語錄關聯表UUID
     /// </summary>
     [Key]
-    [StringLength(10)]
-    public string UP_UUID { get; set; }
+    public Guid UP_UUID { get; set; }
 
     /// <summary>
     /// 使用者UUID
@@ -55,4 +54,12 @@ public partial class User_UserPost
     /// </summary>
     [Column(TypeName = "datetime")]
     public DateTime? UpdateTime { get; set; }
+
+    [ForeignKey("P_UUID")]
+    [InverseProperty("User_UserPost")]
+    public virtual Post_Post P_UU { get; set; }
+
+    [ForeignKey("U_UUID")]
+    [InverseProperty("User_UserPost")]
+    public virtual User_UserAccount U_UU { get; set; }
 }

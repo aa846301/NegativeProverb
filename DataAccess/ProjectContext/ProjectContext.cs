@@ -103,10 +103,8 @@ public partial class ProjectContext : DbContext
 
         modelBuilder.Entity<User_UserPost>(entity =>
         {
-            entity.HasKey(e => e.UP_UUID).HasName("PK_User_Post");
-
             entity.Property(e => e.UP_UUID)
-                .IsFixedLength()
+                .ValueGeneratedNever()
                 .HasComment("使用者語錄關聯表UUID");
             entity.Property(e => e.CreateTime).HasComment("創建時間");
             entity.Property(e => e.Creator).HasComment("創建人");
@@ -117,6 +115,14 @@ public partial class ProjectContext : DbContext
             entity.Property(e => e.U_UUID).HasComment("使用者UUID");
             entity.Property(e => e.UpdateTime).HasComment("更新時間");
             entity.Property(e => e.Updator).HasComment("更新人");
+
+            entity.HasOne(d => d.P_UU).WithMany(p => p.User_UserPost)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_UserPost_Post_Post");
+
+            entity.HasOne(d => d.U_UU).WithMany(p => p.User_UserPost)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_UserPost_User_UserAccount");
         });
 
         OnModelCreatingPartial(modelBuilder);

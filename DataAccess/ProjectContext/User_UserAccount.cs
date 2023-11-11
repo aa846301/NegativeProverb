@@ -27,7 +27,7 @@ public partial class User_UserAccount
     /// 密碼
     /// </summary>
     [Required]
-    [StringLength(50)]
+    [StringLength(255)]
     public string U_Pwd { get; set; }
 
     /// <summary>
@@ -77,4 +77,7 @@ public partial class User_UserAccount
     /// </summary>
     [Column(TypeName = "datetime")]
     public DateTime? UpdateTime { get; set; }
+
+    [InverseProperty("U_UU")]
+    public virtual ICollection<User_UserPost> User_UserPost { get; set; } = new List<User_UserPost>();
 }

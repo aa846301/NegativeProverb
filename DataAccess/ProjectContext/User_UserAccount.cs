@@ -11,6 +11,11 @@ namespace DataAccess.ProjectContext;
 public partial class User_UserAccount
 {
     /// <summary>
+    /// 排序
+    /// </summary>
+    public int U_Sort { get; set; }
+
+    /// <summary>
     /// UUID
     /// </summary>
     [Key]
@@ -50,9 +55,16 @@ public partial class User_UserAccount
     public string U_Tel { get; set; }
 
     /// <summary>
-    /// 排序
+    /// 是否通過驗證
     /// </summary>
-    public int U_Sort { get; set; }
+    public bool? U_Verify { get; set; }
+
+    /// <summary>
+    /// 驗證碼
+    /// </summary>
+    [StringLength(50)]
+    [Unicode(false)]
+    public string U_VerifyCode { get; set; }
 
     /// <summary>
     /// 創建人

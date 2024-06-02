@@ -97,6 +97,8 @@ public partial class ProjectContext : DbContext
                 .ValueGeneratedOnAdd()
                 .HasComment("排序");
             entity.Property(e => e.U_Tel).HasComment("電話");
+            entity.Property(e => e.U_Verify).HasComment("是否通過驗證");
+            entity.Property(e => e.U_VerifyCode).HasComment("驗證碼");
             entity.Property(e => e.UpdateTime).HasComment("更新時間");
             entity.Property(e => e.Updator).HasComment("更新人");
         });

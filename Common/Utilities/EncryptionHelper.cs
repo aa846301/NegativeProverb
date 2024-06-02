@@ -75,8 +75,12 @@ public class EncryptionHelper
     /// <returns></returns>
     public static bool ValidIsEMail(string mail)
     {
+        const string mailRegex = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
         //檢查信箱是否符合規則
-        return Regex.IsMatch(mail, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+
+        return Regex.IsMatch(mail, mailRegex);
+        //測試時，信箱准許+符號
+        //return Regex.IsMatch(mail, @"^([\w\.\-] +)@([\w\-\+] +)((\.(\w){ 2,3})+)$");
     }
     
 }

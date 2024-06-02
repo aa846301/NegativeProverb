@@ -27,6 +27,24 @@ namespace NegativeProverb.Controllers
         [Route("CreateUserAccount")]
         public async Task<BaseModel> CreateUserAccount(CreateUserAccountInput input) => await _userinfoService.CreateUserAccount(input);
 
+        /// <summary>
+        /// 寄會員驗證信
+        /// </summary>
+        /// <param name="userAccount">會員帳號</param>
+        /// <param name="userMail">會員信箱</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("SendVerifyMail")]
+        public async Task<BaseModel> SendVerifyMail(string userAccount, string userMail) => await _userinfoService.SendVerifyMail(userAccount, userMail);
+
+        /// <summary>
+        /// 驗證會員帳號
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("VerifyUserinfo")]
+        public async Task<BaseModel> VerifyUserinfo([FromQuery] VerifyUserAccountInput input) => await _userinfoService.VerifyUserinfo(input);
 
         /// <summary>
         /// 取得使用者帳號列表

@@ -33,22 +33,22 @@ NegativeProverb is a website dedicated to negative proverbs where members can re
 
 [Demo URL](https://your-demo-url.com)
 
-### Quick Start
+## Quick Start
 
 Under construction.
 
-### Samples
+## Samples
 
 See the sample projects built with the NegativeProverb project.
 
-### Want to Contribute?
+## Want to Contribute?
 
 NegativeProverb is an open-source project. You can directly send pull requests to contribute.
 
-### Support the NegativeProverb Project
+## Support the NegativeProverb Project
 
 Love NegativeProverb? Please give a star to this repository ⭐
 
-### Discord Channel
+## Discord Channel
 
 You can use this link to join the NegativeProverb Community Discord Server: https://discord.gg/ (no server)

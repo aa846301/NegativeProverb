@@ -6,17 +6,17 @@ using Microsoft.Extensions.Configuration;
 
 public class JwtHelpers
 {
-    private readonly IConfiguration Configuration;
+    private readonly IConfiguration _configuration;
 
     public JwtHelpers(IConfiguration configuration)
     {
-        this.Configuration = configuration;
+        _configuration = configuration;
     }
 
     public string GenerateToken(string userName, int expireMinutes = 30)
     {
-        var issuer = Configuration.GetValue<string>("JwtSettings:Issuer");
-        var signKey = Configuration.GetValue<string>("JwtSettings:SignKey");
+        var issuer = _configuration.GetValue<string>("JwtSettings:Issuer");
+        var signKey = _configuration.GetValue<string>("JwtSettings:SignKey");
 
         // Configuring "Claims" to your JWT Token
         var claims = new List<Claim>();

@@ -10,12 +10,12 @@ namespace Common.Utilities
     /// </summary>
     public class MailHelper
     {
-        private readonly IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
 
 
         public MailHelper(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -27,12 +27,12 @@ namespace Common.Utilities
         /// <returns></returns>
         public async Task SendMail(string targetAddress, string subject, string body)
         {
-            string host = Configuration.GetValue<string>("MailServerSetting:Host"); // 送信郵件主機
-            int port = Configuration.GetValue<int>("MailServerSetting:Post"); // 送信郵件主機連接埠
-            string account = Configuration.GetValue<string>("MailServerSetting:Account"); // 帳號
-            string password = Configuration.GetValue<string>("MailServerSetting:Password"); // 密碼
-            string mailServerName = Configuration.GetValue<string>("MailServerSetting:MailServerName"); // 寄信者名稱
-            string mailServerAddress = Configuration.GetValue<string>("MailServerSetting:MailServerAddress");  // 寄送者信箱
+            string host = _configuration.GetValue<string>("MailServerSetting:Host"); // 送信郵件主機
+            int port = _configuration.GetValue<int>("MailServerSetting:Post"); // 送信郵件主機連接埠
+            string account = _configuration.GetValue<string>("MailServerSetting:Account"); // 帳號
+            string password = _configuration.GetValue<string>("MailServerSetting:Password"); // 密碼
+            string mailServerName = _configuration.GetValue<string>("MailServerSetting:MailServerName"); // 寄信者名稱
+            string mailServerAddress = _configuration.GetValue<string>("MailServerSetting:MailServerAddress");  // 寄送者信箱
 
             MimeMessage message = new();
             message.From.Add(new MailboxAddress(mailServerName, mailServerAddress));

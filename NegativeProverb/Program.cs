@@ -61,10 +61,15 @@ builder.Services.AddSwaggerGen(options =>
 //Scoped：注入的物件在同一Request中，參考的都是相同物件(你在Controller、View中注入的IDbConnection指向相同參考)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(connectionString));
+
+
 builder.Services.AddBusiness();
 
 builder.Services.AddSingleton<JwtHelpers>();
 builder.Services.AddSingleton<MailHelper>();
+
+//實驗性質加入取得當前域名的服務
+builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -186,9 +191,7 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
-//app.UseHttpsRedirection(); 
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

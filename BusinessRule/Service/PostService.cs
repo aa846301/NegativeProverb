@@ -1,20 +1,26 @@
-﻿using Common.Model;
+﻿using BusinessRule.Interface;
+using Common.Attributes;
+using Common.Model;
 using DataAccess.BusinessModel.Post;
 using DataAccess.ProjectContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net;
 using System.Runtime.CompilerServices;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace BusinessRule.Service;
 
 /// <summary>
 /// 負能量語錄管理
 /// </summary>
+[Service(typeof(IPostService))]
 public class PostService : BaseService
 {
     public PostService(ProjectContext projectContext) : base(projectContext)
     {
+
     }
 
 

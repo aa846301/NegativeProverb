@@ -18,27 +18,47 @@ namespace Common.Extension
 
             var typesWithAttribute = assemblies
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsClass && !type.IsAbstract && type.GetCustomAttribute<ServiceAttribute>() != null);
+                .Where(type => (type.IsInterface || type.IsClass) && !type.IsAbstract && type.GetCustomAttribute<ServiceAttribute>() != null);
 
             foreach (var type in typesWithAttribute)
             {
                 var attribute = type.GetCustomAttribute<ServiceAttribute>();
                 var lifetime = attribute.Lifetime;
+                var interfaceType = attribute.InterfaceType;
 
-                switch (lifetime)
+                if (interfaceType != null && interfaceType.IsAssignableFrom(type))
                 {
-                    case ServiceLifetime.Singleton:
-                        services.AddSingleton(type);
-                        break;
-                    case ServiceLifetime.Transient:
-                        services.AddTransient(type);
-                        break;
-                    case ServiceLifetime.Scoped:
-                        services.AddScoped(type);
-                        break;
+                    switch (lifetime)
+                    {
+                        case ServiceLifetime.Singleton:
+                            services.AddSingleton(interfaceType, type);
+                            break;
+                        case ServiceLifetime.Transient:
+                            services.AddTransient(interfaceType, type);
+                            break;
+                        case ServiceLifetime.Scoped:
+                            services.AddScoped(interfaceType, type);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (lifetime)
+                    {
+                        case ServiceLifetime.Singleton:
+                            services.AddSingleton(type);
+                            break;
+                        case ServiceLifetime.Transient:
+                            services.AddTransient(type);
+                            break;
+                        case ServiceLifetime.Scoped:
+                            services.AddScoped(type);
+                            break;
+                    }
                 }
             }
         }
+
 
     }
 }

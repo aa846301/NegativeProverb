@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessRule.Service
 {
-    [Service()]
+
     public class BaseService
     {
         public readonly ProjectContext _db;

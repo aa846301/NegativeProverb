@@ -43,17 +43,6 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1",
         Title = "NegativeProverb API",
         Description = "An ASP.NET Core Web API for NegativeProverb",
-        //TermsOfService = new Uri("https://example.com/terms"),
-        //Contact = new OpenApiContact
-        //{
-        //    Name = "Example Contact",
-        //    Url = new Uri("https://example.com/contact")
-        //},
-        //License = new OpenApiLicense
-        //{
-        //    Name = "Example License",
-        //    Url = new Uri("https://example.com/license")
-        //}
     });
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -112,24 +101,6 @@ app.Use(async (context, next) =>
 {
     try
     {
-        //if (context.Request.ContentLength == 0)
-        //{
-        //    context.Response.ContentType = "application/json";
-        //    context.Response.StatusCode = 400;
-
-
-        //    var errorMessage = new BaseModel
-        //    {
-        //        Success = false,
-        //        Code = context.Response.StatusCode.ToString(),
-        //        Exception = "A non-empty request body is required.",
-        //    };
-        //    await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage));
-        //}
-        //else
-        //{
-        //    await next();
-        //}
         await next();
     }
     catch (Exception ex)
@@ -148,51 +119,14 @@ app.Use(async (context, next) =>
     }
 });
 
-
-
-// 取得 JWT Token 中的所有 Claims
-app.MapGet("/claims", (ClaimsPrincipal user) =>
-{
-    return Results.Ok(user.Claims.Select(p => new { p.Type, p.Value }));
-})
-    .WithName("Claims")
-    .RequireAuthorization();
-
-// 取得 JWT Token 中的使用者名稱
-app.MapGet("/username", (ClaimsPrincipal user) =>
-{
-    return Results.Ok(user.Identity?.Name);
-})
-    .WithName("Username")
-    .RequireAuthorization();
-
-// 取得使用者是否擁有特定角色
-app.MapGet("/isInRole", (ClaimsPrincipal user, string name) =>
-{
-    return Results.Ok(user.IsInRole(name));
-})
-    .WithName("IsInRole")
-    .RequireAuthorization();
-
-// 取得 JWT Token 中的 JWT ID
-app.MapGet("/jwtid", (ClaimsPrincipal user) =>
-{
-    return Results.Ok(user.Claims.FirstOrDefault(p => p.Type == "jti")?.Value);
-})
-    .WithName("JwtId")
-    .RequireAuthorization();
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

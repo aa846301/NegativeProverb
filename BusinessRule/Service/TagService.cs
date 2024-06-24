@@ -1,4 +1,6 @@
-﻿using Common.Model;
+﻿using BusinessRule.Interface;
+using Common.Attributes;
+using Common.Model;
 using DataAccess.BusinessModel.PostTag;
 using DataAccess.ProjectContext;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace BusinessRule.Service
 {
+    [Service(typeof(ITagService))]
     public class TagService : BaseService
     {
         public TagService(ProjectContext projectContext) : base(projectContext)
